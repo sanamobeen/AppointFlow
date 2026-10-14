@@ -11,6 +11,9 @@ jobs:
   backend-check:
     runs-on: ubuntu-latest
 
+    env:
+      DJANGO_SETTINGS_MODULE: backend.settings
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,7 +28,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Django checks
+      - name: Run Django system checks
         run: |
           python manage.py check
 
