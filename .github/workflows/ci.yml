@@ -1,5 +1,5 @@
 
-name: AppointFlow CI
+name: Backend CI
 
 on:
   push:
@@ -8,17 +8,28 @@ on:
     branches: [main]
 
 jobs:
-  project-check:
+  backend-check:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check project structure
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
         run: |
-          test -d backend
-          test -d frontend
-          test -d docs
-          echo "AppointFlow project structure is valid."
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Django checks
+        run: |
+          python manage.py check
+
+      - name: Run tests
+        run: |
+          python manage.py test
 
